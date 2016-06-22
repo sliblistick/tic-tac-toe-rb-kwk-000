@@ -12,16 +12,7 @@ WIN_COMBINATIONS = [
 def won?(board)
   WIN_COMBINATIONS.each do |win_combination|
     win_combination.each do |token|
-
-      win_index_1 = win_combination[0]
-      win_index_2 = win_combination[1]
-      win_index_3 = win_combination[2]
-
-      position_1 = board[win_index_1]
-      position_2 = board[win_index_2]
-      position_3 = board[win_index_3]
-
-      if position_1 == position_2 && position_2 == position_3 && position_1 != " "
+      if board[win_combination[0]] == board[win_combination[1]] && board[win_combination[1]] == board[win_combination[2]] && board[win_combination[0]] != " "
         return win_combination
       end
     end
@@ -30,29 +21,15 @@ def won?(board)
 end
 
 def full?(board)
-  board.each do |token|
-    if token == " "
-      return false
-    end
-  end
-  return true
+  board.all?{|token| token == "X" || token == "O"}
 end
 
 def draw?(board)
-  full?(board)
-  if won?(board) == false && full?(board)
-    return true
-  else
-    return false
-  end
+  !won?(board) && full?(board)
 end
 
 def over?(board)
-  if won?(board) || full?(board)
-    return true
-  else
-    return false
-  end
+  won?(board) || draw?(board)
 end
 
 def winner(board)
@@ -124,9 +101,8 @@ def play(board)
     turn(board)
   end
   if won?(board)
-    token = winner(board)
-    puts "Congratulations the winner is #{token}"
+    puts "Congratulations #{winner(board)}!"
   elsif draw?(board)
-    puts "Cats game!"
+    puts "Cats Game!"
   end
 end
